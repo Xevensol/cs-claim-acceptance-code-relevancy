@@ -37,13 +37,13 @@ def load_all_icd_codes():
         try:
             cursor = connection.cursor()
             query = """
-                SELECT code 
+                SELECT code, summary
                 FROM MedicalCodes 
                 WHERE code_type = 'icd'
             """
             cursor.execute(query)
             results = cursor.fetchall()
-            return [(str(row[0]), str(row[0])) for row in results]
+            return [(str(row[0]), str(row[1])) for row in results]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error fetching ICD codes: {e}")
         finally:
@@ -58,13 +58,13 @@ def load_all_cpt_codes():
         try:
             cursor = connection.cursor()
             query = """
-                SELECT code 
+                SELECT code, summary
                 FROM MedicalCodes 
                 WHERE code_type = 'cpt'
             """
             cursor.execute(query)
             results = cursor.fetchall()
-            return [(str(row[0]), str(row[0])) for row in results]
+            return [(str(row[0]), str(row[1])) for row in results]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error fetching CPT codes: {e}")
         finally:
@@ -79,13 +79,13 @@ def load_all_sbs_codes():
         try:
             cursor = connection.cursor()
             query = """
-                SELECT code 
+                SELECT code, summary
                 FROM MedicalCodes 
                 WHERE code_type = 'sbs'
             """
             cursor.execute(query)
             results = cursor.fetchall()
-            return [(str(row[0]), str(row[0])) for row in results]
+            return [(str(row[0]), str(row[1])) for row in results]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error fetching SBS codes: {e}")
         finally:

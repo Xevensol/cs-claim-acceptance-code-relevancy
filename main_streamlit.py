@@ -163,7 +163,7 @@ with col1:
         if icd_codes:
             selected_icds = st.multiselect(
                 "",
-                options=[code[0] for code in icd_codes],
+                options=[f"{code[0]} ( {code[1]} )" for code in icd_codes],
                 key="icd_multiselect",
                 placeholder="Select ICD-10 codes...",
                 default=st.session_state.icd_10_codes
@@ -177,7 +177,7 @@ with col2:
         if sbs_codes:
             selected_sbss = st.multiselect(
                 "",
-                options=[code[0] for code in sbs_codes],
+                options=[f"{code[0]} ( {code[1]} )" for code in sbs_codes],
                 key="sbs_multiselect",
                 placeholder="Select SBS codes...",
                 default=st.session_state.sbs_codes
