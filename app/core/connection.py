@@ -91,3 +91,47 @@ def load_all_sbs_codes():
         finally:
             connection.close()
     raise HTTPException(status_code=500, detail="Database connection failed")
+
+
+def get_icd_descriptions(codes: str):
+ 
+    try:
+        # Split the comma-separated ICD codes into a list
+        icd_codes = codes.split(',')
+ 
+        # Establish a database connection
+        conn = get_db_connection()
+        cur = conn.cursor()
+ 
+        # Prepare the query to get the summaries for the provided ICD codes
+        query = """
+        SELECT code, code_type as type, summary
+        FROM MedicalCodes
+        WHERE code IN ({})
+        """.format(','.join(['?'] * len(icd_codes)))
+ 
+        # Execute the query and fetch the results
+        cur.execute(query, icd_codes)
+        rows = cur.fetchall()
+ 
+        # Prepare the response
+        result = []
+        for row in rows:
+            result.append({'code' : row[0], 'type' : row[1], 'summary' : row[2]})
+ 
+        # Close the connection
+        cur.close()
+        conn.close()
+        
+        # Return the structured response
+        return {"data": result}
+        # return JSONResponse(
+        #     status_code=200,
+        #     content={
+        #         "status": "success",
+        #         "data": result
+        #     }
+        # )
+ 
+    except Exception as e: 
+        return None

@@ -2,6 +2,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
 from app.core.config import settings
+from app.core.connection import get_icd_descriptions
 from langchain_core.pydantic_v1 import BaseModel
 from typing import List, Optional
 import requests
@@ -75,24 +76,17 @@ def evaluate_codes(codes):
     
     return response if response else None
 
-
+    
 
 def get_code_description(codes):
-    url = f"https://medical-codes-542808340038.us-central1.run.app/get_icd_descriptions?codes={codes}"
-
-    payload = {'codes': codes}
 
     try:
-        response = requests.get(url)
-
-        if response.status_code == 200:
-            data = response.json()
-            return data
-        else:
-            return f"Error: Received status code {response.status_code}"
+        response = get_icd_descriptions(codes)
+        
+        return response
     
     except Exception as e:
-        return f"Error: {str(e)}"
+        return None
     
 
 # Add these helper functions at the top with other functions
