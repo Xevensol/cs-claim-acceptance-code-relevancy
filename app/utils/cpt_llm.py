@@ -1,9 +1,9 @@
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
 from app.core.config import settings
 from app.core.connection import get_icd_descriptions
-from langchain_core.pydantic_v1 import BaseModel
+from pydantic import BaseModel
 from typing import List, Optional
 import requests
 
@@ -64,8 +64,8 @@ def evaluate_codes(codes):
 
     content_prompt = ChatPromptTemplate.from_template(prompt)
     model = ChatOpenAI(
-            # model='gpt-4',
-            model='ft:gpt-4o-mini-2024-07-18:xeven-solutions:sbs-codes:B1wWrKWT',
+            model='gpt-4o-mini',
+            # model='ft:gpt-4o-mini-2024-07-18:xeven-solutions:sbs-codes:B1wWrKWT',
             temperature=0,
             api_key=settings.OPENAI_API_KEY
         )

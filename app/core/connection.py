@@ -40,6 +40,7 @@ def load_all_icd_codes():
                 SELECT code, summary
                 FROM MedicalCodes 
                 WHERE code_type = 'icd'
+                AND code LIKE '%[0-9].%'
             """
             cursor.execute(query)
             results = cursor.fetchall()
