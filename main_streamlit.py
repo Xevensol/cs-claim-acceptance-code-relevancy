@@ -1,8 +1,8 @@
 import streamlit as st
 from app.core.config import settings
-from app.utils.cpt_llm import evaluate_codes,get_code_description
-from app.core.connection import load_all_cpt_codes,load_all_icd_codes,load_all_sbs_codes
-from app.utils.css_styling import warning_message,output_final,output_message,reformat_bullet_points,reformat_output
+from app.utils.cpt_llm import evaluate_codes, get_code_description
+from app.core.connection import load_all_icd_codes, load_all_sbs_codes, load_all_sbs_codes_chapter_names
+from app.utils.css_styling import warning_message, output_final, reformat_output
 
 st.markdown(
     """
@@ -153,6 +153,21 @@ if 'icd_10_codes' not in st.session_state:
     st.session_state.icd_10_codes = []
 if 'sbs_codes' not in st.session_state:
     st.session_state.sbs_codes = []
+if 'sbs_chapter_names' not in st.session_state:
+    st.session_state.sbs_chapter_names = []
+
+with st.expander("SBS Codes Chapter Name", expanded=True):
+    sbs_chapter_names = load_all_sbs_codes_chapter_names()
+    if sbs_chapter_names:
+        selected_sbs_chapters = st.multiselect(
+            "",
+            options=[f"{chapter}" for chapter in sbs_chapter_names],
+            key="sbs_chapter_multiselect",
+            placeholder="Select SBS Codes Chapter Name...",
+            default=st.session_state.sbs_chapter_names
+        )
+        if selected_sbs_chapters:
+            st.session_state.sbs_chapter_names = selected_sbs_chapters
 
 # Replace the columns section with this new code
 col1, col2 = st.columns(2)
@@ -173,7 +188,7 @@ with col1:
 
 with col2:
     with st.expander("SBS Codes", expanded=True):
-        sbs_codes = load_all_sbs_codes()
+        sbs_codes = load_all_sbs_codes(st.session_state.sbs_chapter_names)
         if sbs_codes:
             selected_sbss = st.multiselect(
                 "",

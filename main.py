@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from app.api.router import api_router
-import uvicorn 
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
+
+from app.api.router import api_router
 
 app = FastAPI()
 
@@ -15,18 +16,17 @@ app.add_middleware(
     allow_headers=["*"],  # Specify allowed headers for more control
 )
 
-@app.get('/')
+
+@app.get("/")
 def root():
     """
     Root endpoint to test API availability.
     """
-    return JSONResponse(
-        'WELLCOME TO CLOUD SOLUTIONS AI'
-    )
+    return JSONResponse("WELCOME TO CLOUD SOLUTIONS AI")
 
 
-
+# Include API router
 app.include_router(api_router, prefix="/api")
 
-if __name__== "__main__":
+if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=3636)
